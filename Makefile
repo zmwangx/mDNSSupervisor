@@ -1,8 +1,6 @@
 .PHONY: all install clean
 
-all: mDNSSupervisor
-
-mDNSSupervisor:
+all:
 	go build -ldflags="-s -w"
 
 install:
