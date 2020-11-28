@@ -140,7 +140,11 @@ func main() {
 	if !ok {
 		log.Fatalf("another instance of %s already running", _progName)
 	}
-	defer lock.Unlock()
+	defer func() {
+		if err = lock.Unlock(); err != nil {
+			log.Fatalf("failed to unlock %s: %s", _lockPath, err)
+		}
+	}()
 
 	ra := aggregator.NewRollingAggregator(uint(_interval))
 	sa := aggregator.NewStaticAggregator(60)
