@@ -17,7 +17,14 @@ make
 sudo make install
 ```
 
-Directly downloading artifacts: *to be added after publishing the repo.*
+Directly downloading artifacts:
+
+```
+sudo mkdir -p /usr/local/sbin
+sudo curl -Lo /usr/local/sbin/mDNSSupervisor https://github.com/zmwangx/mDNSSupervisor/releases/download/v0.1/mDNSSupervisor
+sudo curl -Lo /Library/LaunchDaemons/org.zhimingwang.mDNSSupervisor.plist https://raw.githubusercontent.com/zmwangx/mDNSSupervisor/master/launchd/org.zhimingwang.mDNSSupervisor.plist
+sudo launchctl load /Library/LaunchDaemons/org.zhimingwang.mDNSSupervisor.plist
+```
 
 ## Usage
 
