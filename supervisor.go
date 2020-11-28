@@ -82,6 +82,14 @@ func monitorTcpdump(ra *aggregator.RollingAggregator, sa *aggregator.StaticAggre
 	}
 }
 
+func printMDNSResponderStats() {
+	cmd := exec.Command("/bin/zsh", "-c",
+		`/bin/ps -o pid,%cpu,rss,etime,command -p "$(/usr/bin/pgrep mDNSResponder | /usr/bin/tr '\n' , )"`)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	_ = cmd.Run()
+}
+
 func restartMDNSResponder() {
 	cmd := exec.Command("/usr/bin/killall", "mDNSResponder")
 	cmd.Stderr = os.Stderr
@@ -138,6 +146,7 @@ func main() {
 	sa := aggregator.NewStaticAggregator(60)
 	sl := newStatsLogger()
 	go ra.Process(uint(_threshold), func(timestamp int64, rollingAverage float64) {
+		printMDNSResponderStats()
 		restartMDNSResponder()
 	})
 	go sa.Process(func(timestamp int64, aggregate uint) {
